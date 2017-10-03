@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body ng-app="ow">
+
+	<header>
+
+		<div 
+			ng-controller 	= "authCtrl"
+			id				= "auth">
+			
+			<span ng-if= "$root.username">Hello, {{$root.username}}</span>
+
+			<div id="allUsers">
+				<button ng-click="getAllUsersList()">
+					get all users list
+				</button>
+				<ul>
+					<li ng-repeat="user in allUsersList">{{user.username}}, </li>
+				</ul>
+			</div>
+		
+			<i 
+				ng-if 	 = "!$root.isLogged"
+				ng-click = "toggleLoginForm()"
+				class	 = "glyphicon glyphicon-log-in">
+			</i>
+
+			<div 
+				ng-if 	= "loginView"
+				id		= "login"
+				class	= "auth-form">
+				
+				<input 
+					ng-model	= "user.username" 
+					type		= "text"
+					class		= "form-control"
+					placeholder = "username">
+				
+				<input 
+					ng-model	= "user.password" 
+					type		= "password" 
+					class		= "form-control"
+					placeholder = "password">
+				
+				<button 
+					class	= "btn btn-success"
+					ng-click= "login()">
+					login
+				</button>
+
+				<button 
+					class	= "btn btn-light"
+					ng-click= "hideLoginForm()">
+					cancel
+				</button>
+				
+				<a ng-click = "openRegistrForm()">registration</a>
+			</div>
+			
+			<!-- registr -->
+			<div 
+				ng-if 	= "registrView"
+				id		= "registr"
+				class	= "auth-form">
+				
+				<input 
+					ng-model	= "newUser.username" 
+					type		= "text"
+					class		= "form-control"
+					placeholder = "username">
+				
+				<input 
+					ng-model	= "newUser.password" 
+					type		= "password" 
+					class		= "form-control"
+					placeholder = "password">
+				
+				<input 
+					ng-model	= "newUser.confirm"
+					type		= "password"
+					class		= "form-control" 
+					placeholder = "confirm password">
+				
+				<button
+					class	= "btn btn-success"
+					ng-click = "registr()">
+					registr
+				</button>
+				<button
+					ng-click = "hideRegistrForm()"
+					class	= "btn btn-light">
+					cancel
+				</button>
+				<span 
+					id			= "err-msg" 
+					ng-class	= "errMsg.class">
+					{{errMsg.registrErrMsg}}
+				</span>
+			</div>
+		</div>	
+	</header>
+
+	
+	<main ng-controller= "dataCtrl">
+		
+		<!-- request -->
+		<div id="request-block">
+			
+			<input 
+				class	= "form-control"  
+				ng-model= "city" 
+				type	= "text">
+
+			<button 
+				ng-if	= "$root.isLogged"
+				ng-click= "addToFavorite()"
+				class 	= "btn btn-primary"
+				ng-disabled = "disableAddBtn()">
+				add to favorites
+			</button>
+		</div>
+		
+		<!-- response -->
+		<div id="response-block">
+			
+			<!-- favorite -->
+			<div
+				ng-if = "$root.isLogged"
+				ng-controller = "favoriteCtrl" 
+				id	= "favorite">
+				<ul>
+					<li ng-repeat = "city in favorites">
+						<button class="btn btn-light" ng-click="getCityData(city)">{{city}}</button>
+						<span ng-click="deleteFavoriteCity(city)" class="glyphicon glyphicon-trash"></span>
+					</li>
+				</ul>
+			</div>
+			
+			<!-- get button -->
+			<button 
+				ng-click= "getCityData(city)" 
+				class	= "btn btn-primary">
+				get weather
+			</button>
+			
+			<!-- main view -->
+			<table class = "table table-bordered" id="main-view-table">
+				<tr><td><h2>{{mainView.name}}</h2></td></tr>
+				<tr ng-repeat="(key, value) in mainView">
+					<td>{{key}}</td>
+					<td ng-if = "detectDataType(value) === 'simple'">{{value}}</td> 
+					<td ng-if = "detectDataType(value) === 'object'">
+						<table class = "table table-bordered">
+							<tr ng-repeat = "(key, value) in value">
+								<td>{{key}}</td>
+								<td>{{value}}</td>
+							</tr>
+						</table>
+					</td> 
+					<td ng-if = "detectDataType(value) === 'array'">
+						<ul>
+							<li ng-repeat = "item in value">
+								<span ng-if = "detectDataType(value) === 'simple'">{{item}}</span>
+								<table 
+									ng-if = "detectDataType(item) === 'object'" 
+									class = "table table-bordered">
+									<tr ng-repeat = "(key, value) in item">
+										<td>{{key}}</td>
+										<td>{{value}}</td>
+									</tr>
+								</table>
+							</li>
+						</ul>
+					</td> 
+				</tr>
+			</table>
+		</div>
+
+		
+	</main>
+
+	<footer>
+		footer
+	</footer>
+	
+	<script src="index.js"></script>	
+</body>
+</html>
