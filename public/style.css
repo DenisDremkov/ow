@@ -6,12 +6,22 @@ body {
 
 main {
 	display: block;
+	padding: 50px;
 }
 
 body {
 	height: 100%;
 }
 
+.btn {
+	margin: 15px;
+}
+.table {
+	margin-bottom: 0;
+}
+ul {
+	padding: 0;
+}
 /*header*/
 	
 	header {
@@ -25,15 +35,22 @@ body {
 		line-height: 50px;
 		background-color: #999;
 		text-align: right;
+		z-index: 100;
+	}
+
+	header .btn-light {
+
 	}
 
 
-
-	.glyphicon-log-in {
-		font-size: 20px;
+	#sign-out-handler,
+	#sign-in-handler {
+		font-size: 16px;
 		display: inline-block;
-		vertical-align: middle;
+		margin-left: 20px;
+		line-height: 1;
 		cursor: pointer;
+		color: #fff;
 	}
 
 	#auth {
@@ -46,6 +63,7 @@ body {
 		right: 0;
 		width: 300px;
 		padding: 20px;
+		background-color: #fff;
 		-webkit-box-shadow: 0 0 2px 0 #ccc;
 		box-shadow: 0 0 2px 0 #ccc;
 	}
@@ -91,10 +109,10 @@ body {
 		display: block;
 	}
 
-	#request-block,
-	#response-block {
-		width: 500px;
-		margin: 100px auto;
+	#request-block	 {
+		width: 50%;
+		max-width: 200px;
+		margin: 50px auto;
 		text-align: center;	
 		border: 1px solid #ccc;
 		padding: 25px;
@@ -110,9 +128,11 @@ body {
 	}
 
 	#response-block {
-
+		width: 50%;
+		margin: auto;
 	}
 
+	/*favorites*/
 	#favorite {
 		position: fixed;
 		top: 50%;
@@ -120,7 +140,14 @@ body {
 		height: 300px;
 		margin-top: -150px;
 		border: 1px solid #ccc;
+		background-color: #fff;
 		overflow-y: auto;
+	}
+
+	#favorite h3 {
+		font-size: 18px;
+		padding: 10px;
+		text-transform: uppercase;
 	}
 
 	#favorite ul { 
@@ -131,16 +158,25 @@ body {
 	#favorite ul li { 
 		display: block;
 		text-align: left;
+		padding: 5px;
+		height: 35px;
 	}
 	
 	#favorite ul li button {
+		display: inline-block;
+		vertical-align: middle;
+		width: 100px;
 		margin: 5px;
 	}
 
+	.glyphicon-trash {
+		display: inline-block;
+		vertical-align: middle;
+		cursor: pointer;
+		color: red;
+	}
+
 	#main-view-table {
-		ul {
-			list-style-type: none;
-		}
 	}
 
 	#main-view-table ul {

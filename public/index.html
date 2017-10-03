@@ -15,11 +15,9 @@
 		<div 
 			ng-controller 	= "authCtrl"
 			id				= "auth">
-			
-			<span ng-if= "$root.username">Hello, {{$root.username}}</span>
 
 			<div id="allUsers">
-				<button ng-click="getAllUsersList()">
+				<button  class="btn btn-light" ng-click="getAllUsersList()">
 					get all users list
 				</button>
 				<ul>
@@ -27,12 +25,21 @@
 				</ul>
 			</div>
 		
-			<i 
+			<span 
+				id		 = "sign-in-handler" 
 				ng-if 	 = "!$root.isLogged"
 				ng-click = "toggleLoginForm()"
-				class	 = "glyphicon glyphicon-log-in">
-			</i>
-
+				class    = "glyphicon glyphicon-log-in">
+			</span>
+			<span ng-if= "$root.username">Hello, {{$root.username}}</span>
+			<span 
+				id		 = "sign-out-handler" 
+				ng-if 	 = "$root.isLogged"
+				ng-click = "signOut()"
+				class    = "glyphicon glyphicon-log-out">
+			</span>
+			
+			<!-- login form -->
 			<div 
 				ng-if 	= "loginView"
 				id		= "login"
@@ -61,11 +68,15 @@
 					ng-click= "hideLoginForm()">
 					cancel
 				</button>
-				
+				<span 
+					id			= "err-msg" 
+					ng-class	= "errMsg.class">
+					{{errMsg.registrErrMsg}}
+				</span>
 				<a ng-click = "openRegistrForm()">registration</a>
 			</div>
 			
-			<!-- registr -->
+			<!-- registr form -->
 			<div 
 				ng-if 	= "registrView"
 				id		= "registr"
@@ -115,16 +126,26 @@
 		<div id="request-block">
 			
 			<input 
-				class	= "form-control"  
-				ng-model= "city" 
-				type	= "text">
-
+				class		= "form-control"  
+				ng-model	= "city" 
+				type		= "text"
+				placeholder	= "enter city"
+				aucomplete>
+			
+			<!-- add to favorite btn -->
 			<button 
 				ng-if	= "$root.isLogged"
 				ng-click= "addToFavorite()"
-				class 	= "btn btn-primary"
+				class 	= "btn btn-success"
 				ng-disabled = "disableAddBtn()">
 				add to favorites
+			</button>
+
+			<!-- get button -->
+			<button 
+				ng-click= "getCityData(city)" 
+				class	= "btn btn-primary" ng-disabled = "disableGetBtn()">
+				get weather
 			</button>
 		</div>
 		
@@ -136,6 +157,7 @@
 				ng-if = "$root.isLogged"
 				ng-controller = "favoriteCtrl" 
 				id	= "favorite">
+				<h3>favorite city: </h3>
 				<ul>
 					<li ng-repeat = "city in favorites">
 						<button class="btn btn-light" ng-click="getCityData(city)">{{city}}</button>
@@ -144,15 +166,8 @@
 				</ul>
 			</div>
 			
-			<!-- get button -->
-			<button 
-				ng-click= "getCityData(city)" 
-				class	= "btn btn-primary">
-				get weather
-			</button>
-			
 			<!-- main view -->
-			<table class = "table table-bordered" id="main-view-table">
+			<table ng-if = "mainView" class = "table table-bordered" id="main-view-table">
 				<tr><td><h2>{{mainView.name}}</h2></td></tr>
 				<tr ng-repeat="(key, value) in mainView">
 					<td>{{key}}</td>
@@ -183,12 +198,10 @@
 				</tr>
 			</table>
 		</div>
-
-		
 	</main>
 
 	<footer>
-		footer
+
 	</footer>
 	
 	<script src="index.js"></script>	

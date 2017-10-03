@@ -1,93 +1,102 @@
 
 // app
+	const myAppModule = angular.module('ow', []);
 
-	var myAppModule = angular.module('ow', []);
-
-// auth
-	
+// auth ctrl	
 	myAppModule.controller('authCtrl', function($scope, authService, dataService) {
 			
-			$scope.user = {};
-			$scope.newUser = {};
+		$scope.user = {};
+		$scope.newUser = {};
+		$scope.errMsg = {};
+		
+		function hideRegistrForm() {
+			$scope.registrView = false;
+			$scope.loginView = true;
 			$scope.errMsg = {};
+		}
+
+		$scope.toggleLoginForm = function() { $scope.loginView = !$scope.loginView; }
+
+		$scope.hideLoginForm = function() { $scope.loginView = false; }
+
+		$scope.openRegistrForm = function() {
+			$scope.registrView = true;
+			$scope.loginView = false;
+			$scope.errMsg = {};
+		}
+
+		$scope.hideRegistrForm = function() {
+			hideRegistrForm();
+		}
+
+		$scope.login = function() {
 			
-			function hideRegistrForm() {
-				$scope.registrView = false;
-				$scope.loginView = true;
+			authService
+				.login($scope.user)
+				.success(function(data) { 
+					if (data.success) {
+						$scope.$root.isLogged = true;
+						$scope.loginView = false;
+						$scope.$root.username = $scope.user.username;
+						dataService.setFavorites(data.favorite);
+					}
+					else {
+						$scope.errMsg.registrErrMsg = data.msg;
+						$scope.errMsg.class = 'error'
+					}
+				})
+				.error(function(err) { console.log(err) });
+		}
+
+		$scope.registr = function() {
+			// client validation
+			if (!$scope.newUser.username || !$scope.newUser.password || !$scope.newUser.confirm) {
+				$scope.errMsg.registrErrMsg = 'fill all fields';
+				$scope.errMsg.class = 'error'
+				return;
 			}
-
-			$scope.toggleLoginForm = function() { $scope.loginView = !$scope.loginView; }
-
-			$scope.hideLoginForm = function() { $scope.loginView = false; }
-
-			$scope.openRegistrForm = function() {
-				$scope.registrView = true;
-				$scope.loginView = false;
+			if ($scope.newUser.password !== $scope.newUser.confirm) {
+				$scope.errMsg.registrErrMsg = 'confirm not equal to password';
+				$scope.errMsg.class = 'error'
+				return;
 			}
+			$scope.errMsg.registrErrMsg = 'all fields valid';
+			$scope.errMsg.class = 'success';
+			
+			// registration
+			authService
+				.registr({username: $scope.newUser.username, password: $scope.newUser.password})
+				.success(function(data) { hideRegistrForm(); })
+				.error(function(err) { console.log(err) });
+		}
 
-			$scope.hideRegistrForm = function() {
-				hideRegistrForm();
-			}
+		$scope.signOut = function() { location.reload(); }
 
-			$scope.login = function() {
-				authService.login($scope.user)
-					.success(function(data) { 
-						if (data.success) {
-							$scope.$root.isLogged = true;
-							$scope.loginView = false;
-							$scope.$root.username = $scope.user.username;
-							dataService.setFavorites(data.favorite);
-						}
-						else {
-							console.log(data.msg)
-						}
-					})
-					.error(function(err) { console.log(err) });
-			}
-
-			$scope.registr = function() {
-				if (!$scope.newUser.username || !$scope.newUser.password || !$scope.newUser.confirm) {
-					$scope.errMsg.registrErrMsg = 'fill all fields';
-					$scope.errMsg.class = 'error'
-					return;
-				}
-				if ($scope.newUser.password !== $scope.newUser.confirm) {
-					$scope.errMsg.registrErrMsg = 'confirm not equal to password';
-					$scope.errMsg.class = 'error'
-					return;
-				}
-				$scope.errMsg.registrErrMsg = 'all fields valid';
-				$scope.errMsg.class = 'success';
-				setTimeout(function() {
-					authService.registr({username: $scope.newUser.username, password: $scope.newUser.password})
-						.success(function(data) { 
-							hideRegistrForm();
-						})
-						.error(function(err) { console.log(err) });
-				},1000)
-			}
-			$scope.getAllUsersList = function() {
-				
-				authService.getAllUsersList()
-					.success(function(data) { 
-						$scope.allUsersList = data
-					})
-					.error(function(err) { console.log(err) });
-			}	
-		})
+		$scope.getAllUsersList = function() {
+			authService
+				.getAllUsersList()
+				.success(function(data) { $scope.allUsersList = data; })
+				.error(function(err) { console.log(err) });
+		}	
+	})
 
 
-//  weather
+//  data ctrl
 
 	myAppModule.controller('dataCtrl', function($scope, dataService) {
 		
-		$scope.city = 'London';
-		
+		$scope.city = 'london';
 		
 		$scope.disableAddBtn = function() {
-			var favorites = dataService.getFavorites();
-			return favorites.indexOf($scope.city) !== -1;
+			let favorites = dataService.getFavorites();
+			if (favorites) {
+				return (favorites.indexOf($scope.city) !== -1) || !$scope.city || ($scope.city === ''); 
+			} else {
+				return false;
+			}
 		}
+
+		$scope.disableGetBtn = function() { return !$scope.city || ($scope.city === ''); }
 
 		$scope.getCityData = function(city) {
 			dataService
@@ -96,16 +105,11 @@
 				.error(function() {console.log('error')});
 		}
 
-		
-
 		$scope.addToFavorite = function() {
-
-			var favorites = dataService.getFavorites();
-			
 			dataService
 				.addToFavorite($scope.city, $scope.$root.username)	
 				.success(function(data) { 
-					favorites.push($scope.city); 
+					dataService.getFavorites().push($scope.city); 
 					$scope.city = undefined;
 				})
 				.error(function() {console.log('error')});
@@ -116,8 +120,7 @@
 				.deleteFavoriteCity(city,  $scope.$root.username)		
 			    .success(function(data) { 
 			    	let arr = dataService.getFavorites();
-					let index = arr.indexOf(city);
-					arr.splice(index, 1); 
+					arr.splice(arr.indexOf(city), 1); 
 				})
 				.error(function() {console.log('error')});
 		}
@@ -127,84 +130,72 @@
 			if (typeof value === 'string' || typeof value === 'number') {
 				return 'simple';
 			} else {
-				if (Array.isArray(value)) {
-					return 'array';
-				} else {
-					return 'object';
-				}
+				if (Array.isArray(value)) { return 'array'; } 
+				else { return 'object'; }
 			}			 
 		}
 	})
 
 // favorite
-
 	myAppModule.controller('favoriteCtrl', function($scope, dataService) {
-		
 		$scope.favorites = dataService.getFavorites();
-		
 		$scope.getFavoriteCityData = function(city) {
-			console.log(city)
 			dataService
 				.getData(city)		
-			    .success(function(data) { 
-			    	$scope.mainView = data.data; 
-			    	console.log($scope.$parent)
-			    })
+			    .success( data => { $scope.mainView = data.data; })
 				.error(function() {console.log('error')});
 		}
-	})
+	});
 
 // service
 	
-	// data
+	// data service
+	myAppModule.service('dataService', function($http) {
 
-		myAppModule.service('dataService', function($http) {
+		let favorites = null;
+		
+		this.setFavorites = function(data) {
+			favorites = data;
+		}
 
-			var favorites = null;
-			
-			this.setFavorites = function(data) {
-				favorites = data;
-			}
+		this.getFavorites = function(data) {
+			return favorites;
+		}
 
-			this.getFavorites = function(data) {
-				return favorites;
-			}
+		this.getData= function(city) {
+			return $http({
+				url: 'http://localhost:3000/getData', 
+				method: "GET",
+				params: {city: city}
+			})	
+		},
 
-			this.getData= function(city) {
-				return $http({
-					url: 'http://localhost:3000/getData', 
-					method: "GET",
-					params: {city: city}
-				})	
-			},
+		this.addToFavorite= function(city, username) {
+			return $http.post(
+				'http://localhost:3000/addToFavorite',
+				{city: city, username: username}
+			)
+		}
 
-			this.addToFavorite= function(city, username) {
-				return $http.post(
-					'http://localhost:3000/addToFavorite',
-					{city: city, username: username}
-				)
-			}
+		this.deleteFavoriteCity = function(city, username) {
+			return $http.post(
+				'http://localhost:3000/deleteFavoriteCity',
+				{city: city, username: username}
+			)
+		}
+	});
 
-			this.deleteFavoriteCity = function(city, username) {
-				return $http.post(
-					'http://localhost:3000/deleteFavoriteCity',
-					{city: city, username: username}
-				)
-			}
-		})
+	// auth service
+	myAppModule.service('authService', function($http, $q) {
+		this.login= function(user) {
+			return $http.post('http://localhost:3000/login', user);
+		};
 
-	// auth
+		this.registr= function(newUser) {
+			return $http.post('http://localhost:3000/registr', newUser);
+		};
 
-		myAppModule.service('authService', function($http, $q) {
-			this.login= function(user) {
-				return $http.post('http://localhost:3000/login', user);
-			};
-
-			this.registr= function(newUser) {
-				return $http.post('http://localhost:3000/registr', newUser);
-			};
-
-			this.getAllUsersList= function() {
-				return $http.get('http://localhost:3000/getAllUsersList');
-			};
-		})
+		this.getAllUsersList= function() {
+			return $http.get('http://localhost:3000/getAllUsersList');
+		};
+	});
