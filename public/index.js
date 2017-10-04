@@ -4,25 +4,49 @@
 		'ngCookies'
 	]);
 
-// run
-	myAppModule.run(['$rootScope', '$http', 'dataService', function ($rootScope, $http, dataService) {
-		return $http
-			.get('http://localhost:3000/session')
-			.success(function(data) {
-				if (data.username) {
-					$rootScope.isLogged = true;
-					$rootScope.username =  data.username;
-					dataService.setFavorites(data.favorite);
-				}				
-			})
-			.error(function() {console.log('error')});
 
+// run
+	myAppModule.run(['$rootScope', '$http', 'dataService', '$window', function ($rootScope, $http, dataService, $window) {
+		let token = $window.localStorage.getItem('sessionOw');
+		if (token) {
+			return $http
+				.get('http://localhost:3000/session')
+				.success(function(data) {
+					if (data.username) {
+						$rootScope.isLogged = true;
+						$rootScope.username =  data.username;
+						dataService.setFavorites(data.favorite);
+					}				
+				})
+				.error(function() {console.log('error')});
+		}
 	}]);
+
+
+// interceptor
+	myAppModule.factory('sessionInjector', [ '$window',function($window) {
+		var sessionInjector = {
+			request: function(request) {
+				let token = $window.localStorage.getItem('sessionOw');
+				request.headers['sessionToken'] = $window.localStorage.getItem('sessionOw');
+				return request;
+			}
+		};
+		return sessionInjector;
+	}]);
+
+
+// config
+	myAppModule.config(['$httpProvider', function($httpProvider) {
+		$httpProvider.interceptors.push('sessionInjector');
+	}]);
+
+
 
 // CONTROLLERS
 	
 	// auth ctrl		
-	myAppModule.controller('authCtrl', function($scope, authService, dataService, $cookies) {
+	myAppModule.controller('authCtrl', function($scope, authService, dataService, $cookies, $window) {
 
 		$scope.user = {};
 		$scope.newUser = {};
@@ -64,6 +88,7 @@
 						$scope.loginView = false;
 						$scope.$root.username = $scope.user.username;
 						dataService.setFavorites(data.favorite);
+						$window.localStorage.setItem('sessionOw', data.token)
 					}
 					else {
 						$scope.errMsg.registrErrMsg = data.msg;
@@ -96,6 +121,7 @@
 		};
 
 		$scope.signOut = function() {
+			$window.localStorage.removeItem('sessionOw');
 			$cookies.remove('sessionOw');
 			location.reload(); 
 		};

@@ -5,7 +5,7 @@ let express 		= require('express'),
 	mongoose 		= require('mongoose'),
 	cookieParser 	= require('cookie-parser'),
 	crypto			= require('crypto'),
-	User 			= require('./user.js'),
+	User 			= require('./user'),
 	session 		= require('./session'),
 	cryptData		= require('./cryptData');
 
@@ -45,24 +45,19 @@ app.post('/registr', function (req, res) {
 
 // login
 app.post('/login', function (req, res) {
-	if (req.sessionUser) {
-		res.send({success: true, msg: 'user logged', favorite: user.favorite});
-	} else {
-		User.findOne({username: req.body.username}, function(err, user) {
-			if (err) {res.send({success: false, msg: 'server error - find user'});} 
-			if (user) {
-				if (user.password === req.body.password) {
-					let sessionCookie = String(user._id) + '.' + cryptData.encrypt(String(user._id));
-					res.cookie('sessionOw',sessionCookie, { maxAge: 24*60*60*1000, httpOnly: false }); //24h
-					res.send({success: true, msg: 'user logged', favorite: user.favorite});	
-				} else {
-					res.send({success: false, msg: 'bad password'});
-				}
+	User.findOne({username: req.body.username}, function(err, user) {
+		if (err) {res.send({success: false, msg: 'server error - find user'});} 
+		if (user) {
+			if (user.password === req.body.password) {
+				let token = String(user._id) + '.' + cryptData.encrypt(String(user._id));
+				res.send({success: true, msg: 'user logged', token: token});	
 			} else {
-				res.send({success: false, msg: 'yuo not registered'});
-			}			
-		})
-	}
+				res.send({success: false, msg: 'bad password'});
+			}
+		} else {
+			res.send({success: false, msg: 'yuo not registered'});
+		}			
+	})
 });
 
 
@@ -119,3 +114,5 @@ app.post('/deleteFavoriteCity', function (req, res) {
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
+
+// 

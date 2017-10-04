@@ -4,10 +4,10 @@ let	cryptData 	= require('./cryptData'),
 
 module.exports =  function(req, res, next) {
 	
-	let cookie = req.cookies.sessionOw;
+	let token = req.headers.sessiontoken;
 
-	if (cookie) {
-		let arr = cookie.split('.');
+	if (token) {
+		let arr = token.split('.');
 		let userId = arr[0];
 		let decryptedId = cryptData.decrypt(arr[1]);
 		if (userId === decryptedId) {
@@ -24,5 +24,4 @@ module.exports =  function(req, res, next) {
 	} else {
 		next();	
 	}
-	
 }
