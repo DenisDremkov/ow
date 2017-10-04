@@ -1,30 +1,30 @@
 
-let crypto = require('crypto'),
+const crypto = require('crypto'),
     bcrypt = require('bcryptjs'),
     algorithm = 'aes192',
     secretPassw = 100,
     secretSession = 'wo';
 
-function encrypt(text){
+let encrypt = (text) => {
     var cipher = crypto.createCipher( algorithm, secretSession )
     var crypted = cipher.update(text,'utf8','hex')
     crypted += cipher.final('hex');
     return crypted;
 }
 
-function decrypt(text){
+let decrypt = (text) => {
     var decipher = crypto.createDecipher( algorithm, secretSession )
     var dec = decipher.update(text,'hex','utf8')
     dec += decipher.final('utf8');
     return dec;
 }
 
-function hashPassword(text){
+let hashPassword = (text) => {
     let hash = bcrypt.hashSync(text, secretPassw);
     return hash;
 }
 
-function comparePassword(passClient, passServer) {
+let comparePassword = (passClient, passServer)  => {
     return bcrypt.compareSync(passClient, passServer)
 }
 

@@ -1,29 +1,30 @@
-html,
-body {
-	height: 100%;
-	/*max-height: 100%;*/
-}
+/*common*/
+	html,
+	body {
+		height: 100%;
+	}
 
-main {
-	display: block;
-	padding: 50px;
-}
+	main {
+		display: block;
+		padding: 50px;
+	}
 
-body {
-	height: 100%;
-}
+	body {
+		height: 100%;
+	}
 
-.btn {
-	margin: 15px;
-}
-.table {
-	margin-bottom: 0;
-}
-ul {
-	padding: 0;
-}
+	.btn {
+		margin: 15px;
+	}
+	.table {
+		margin-bottom: 0;
+	}
+	ul {
+		padding: 0;
+	}
+
+
 /*header*/
-	
 	header {
 		position: fixed;
 		top: 0;
@@ -38,16 +39,13 @@ ul {
 		z-index: 100;
 	}
 
-	header .btn-light {
-
-	}
-
 	#hello {
 		color: #fff;
 		font-size: 16px;
 		font-weight: bold;
 	}
-
+	
+	/*auth handlers*/
 	#sign-out-handler,
 	#sign-in-handler {
 		font-size: 16px;
@@ -57,11 +55,13 @@ ul {
 		cursor: pointer;
 		color: #fff;
 	}
-
+	
+	/*auth wrapper*/
 	#auth {
 		position: relative;
 	}
-
+	
+	/*login and registr form*/
 	.auth-form {
 		position: absolute;
 		top: 60px;
@@ -72,12 +72,12 @@ ul {
 		-webkit-box-shadow: 0 0 2px 0 #ccc;
 		box-shadow: 0 0 2px 0 #ccc;
 	}
-
 	.auth-form .form-control {
 		display: inline-block;
 		margin-top: 20px;
 	}
-
+	
+	/*error message in login and registr form*/
 	#err-msg {
 		position: absolute;
 		bottom: -10px;;
@@ -85,13 +85,13 @@ ul {
 	}
 	#err-msg.error {color: red;}
 	#err-msg.success {color: green;}
-
+	
+	/*all users*/
 	#allUsers {
 		position: absolute;
 		left: 0px;
 		top: 0px;
 	}
-
 	#allUsers button {
 		padding: 0;
 		line-height: 1;
@@ -109,11 +109,11 @@ ul {
 
 
 /*main*/
-
 	main {
 		display: block;
 	}
 
+	/*request*/
 	#request-block	 {
 		width: 50%;
 		max-width: 200px;
@@ -121,17 +121,9 @@ ul {
 		text-align: center;	
 		border: 1px solid #ccc;
 		padding: 25px;
-		
-		input {
-			width: 100px;
-		}
-
-		.btn {
-			display: inline-block;
-			margin-top: 30px;
-		}
 	}
 
+	/*response*/
 	#response-block {
 		width: 50%;
 		margin: auto;
@@ -148,42 +140,35 @@ ul {
 		background-color: #fff;
 		overflow-y: auto;
 	}
-
 	#favorite h3 {
 		font-size: 18px;
 		padding: 10px;
 		text-transform: uppercase;
 	}
-
 	#favorite ul { 
 		padding: 0;
 		list-style-type: none;
 	}
-
 	#favorite ul li { 
 		display: block;
 		text-align: left;
 		padding: 5px;
 		height: 35px;
-	}
-	
+	}	
 	#favorite ul li button {
 		display: inline-block;
 		vertical-align: middle;
 		width: 100px;
 		margin: 5px;
 	}
-
-	.glyphicon-trash {
+	#favorite .glyphicon-trash {
 		display: inline-block;
 		vertical-align: middle;
 		cursor: pointer;
 		color: red;
 	}
 
-	#main-view-table {
-	}
-
+	/*main view*/
 	#main-view-table ul {
 		list-style-type: none;
 	}

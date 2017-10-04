@@ -1,8 +1,8 @@
 
-let	cryptData 	= require('./cryptData'),
+const cryptData = require('./cryptData'),
 	User 		= require('./user.js');
 
-module.exports =  function(req, res, next) {
+module.exports =  (req, res, next) => {
 	
 	let token = req.headers.sessiontoken;
 
@@ -11,7 +11,7 @@ module.exports =  function(req, res, next) {
 		let userId = arr[0];
 		let decryptedId = cryptData.decrypt(arr[1]);
 		if (userId === decryptedId) {
-			User.findOne({_id:userId}, function(err, user) {
+			User.findOne({_id:userId}, (err, user) => {
 				if (err) {next()} 
 				if (user) {
 					res.sessionUser = user;

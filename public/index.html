@@ -10,39 +10,54 @@
 <body ng-app="ow">
 
 	<header>
-		<span>{{$root.test}}</span>
+		
 		<div 
 			ng-controller 	= "authCtrl"
 			id				= "auth">
-
+			
+			<!-- all users -->
 			<div id="allUsers">
-				<button  class="btn btn-light" ng-click="getAllUsersList()">
+				
+				<button  
+					ng-click= "getAllUsersList()"
+					class	= "btn btn-light">
 					get all users list
 				</button>
+				
 				<ul>
 					<li ng-repeat="user in allUsersList">{{user.username}}, </li>
 				</ul>
 			</div>
-		
+			
+			<!-- sign in -->
 			<span 
 				id		 = "sign-in-handler" 
-				ng-if 	 = "!$root.isLogged"
+				ng-if 	 = "!isLogged()"
 				ng-click = "toggleLoginForm()"
 				class    = "glyphicon glyphicon-log-in">
 			</span>
-			<span id="hello" ng-if= "$root.username">Hello, {{$root.username}}</span>
+			
+			<!-- hello -->
+			<span 
+				id		= "hello" 
+				ng-if	= "isLogged()">
+				Hello, {{getUserName()}}
+			</span>
+			
+			<!-- sign-out -->
 			<span 
 				id		 = "sign-out-handler" 
-				ng-if 	 = "$root.isLogged"
+				ng-if 	 = "isLogged()"
 				ng-click = "signOut()"
 				class    = "glyphicon glyphicon-log-out">
 			</span>
 			
 			<!-- login form -->
 			<div 
-				ng-if 	= "loginView"
-				id		= "login"
-				class	= "auth-form">
+				ng-if 			= "view.login"
+				ng-controller 	= "loginCtrl"
+				id				= "login"
+				class			= "auth-form">
 				
 				<input 
 					ng-model	= "user.username" 
@@ -77,9 +92,10 @@
 			
 			<!-- registr form -->
 			<div 
-				ng-if 	= "registrView"
-				id		= "registr"
-				class	= "auth-form">
+				ng-if 			= "view.registr"
+				ng-controller 	= "registrCtrl"
+				id				= "registr"
+				class			= "auth-form">
 				
 				<input 
 					ng-model	= "newUser.username" 
@@ -118,7 +134,6 @@
 		</div>	
 	</header>
 
-	
 	<main ng-controller= "dataCtrl">
 		
 		<!-- request -->
@@ -133,9 +148,9 @@
 			
 			<!-- add to favorite btn -->
 			<button 
-				ng-if	= "$root.isLogged"
-				ng-click= "addToFavorite()"
-				class 	= "btn btn-success"
+				ng-if		= "isLogged()"
+				ng-click	= "addToFavorite()"
+				class 		= "btn btn-success"
 				ng-disabled = "disableAddBtn()">
 				add to favorites
 			</button>
@@ -153,39 +168,68 @@
 			
 			<!-- favorite -->
 			<div
-				ng-if = "$root.isLogged"
-				ng-controller = "favoriteCtrl" 
-				id	= "favorite">
+				ng-if 			= "isLogged()"
+				ng-controller	= "favoriteCtrl" 
+				id				= "favorite">
+				
 				<h3>favorite city: </h3>
+				
 				<ul>
+					
 					<li ng-repeat = "city in favorites">
-						<button class="btn btn-light" ng-click="getCityData(city)">{{city}}</button>
-						<span ng-click="deleteFavoriteCity(city)" class="glyphicon glyphicon-trash"></span>
+						
+						<button 
+							class	= "btn btn-light" 
+							ng-click= "getCityData(city)">
+							{{city}}
+						</button>
+						
+						<span 
+							ng-click= "deleteFavoriteCity(city)" 
+							class	= "glyphicon glyphicon-trash">
+						</span>
 					</li>
 				</ul>
 			</div>
 			
 			<!-- main view -->
-			<table ng-if = "mainView" class = "table table-bordered" id="main-view-table">
+			<table 
+				ng-if 	= "mainView" 
+				class 	= "table table-bordered" 
+				id		="main-view-table">
+				
 				<tr><td><h2>{{mainView.name}}</h2></td></tr>
+				
 				<tr ng-repeat="(key, value) in mainView">
+					
 					<td>{{key}}</td>
+					
 					<td ng-if = "detectDataType(value) === 'simple'">{{value}}</td> 
+					
 					<td ng-if = "detectDataType(value) === 'object'">
+						
 						<table class = "table table-bordered">
+							
 							<tr ng-repeat = "(key, value) in value">
+								
 								<td>{{key}}</td>
 								<td>{{value}}</td>
 							</tr>
 						</table>
 					</td> 
+					
 					<td ng-if = "detectDataType(value) === 'array'">
+						
 						<ul>
+							
 							<li ng-repeat = "item in value">
+								
 								<span ng-if = "detectDataType(value) === 'simple'">{{item}}</span>
+								
 								<table 
 									ng-if = "detectDataType(item) === 'object'" 
 									class = "table table-bordered">
+									
 									<tr ng-repeat = "(key, value) in item">
 										<td>{{key}}</td>
 										<td>{{value}}</td>
@@ -202,6 +246,8 @@
 	<footer>
 
 	</footer>
+
+	<!-- scripts -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-cookies.js"></script>
 	<script src="index.js"></script>	

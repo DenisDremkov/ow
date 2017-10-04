@@ -1,4 +1,4 @@
-let express 		= require('express'),
+const express 		= require('express'),
 	app 			= express(),
 	bodyParser 		= require('body-parser'),
 	request 		= require('request'),
@@ -6,12 +6,12 @@ let express 		= require('express'),
 	cookieParser 	= require('cookie-parser'),
 	crypto			= require('crypto'),
 	User 			= require('./user'),
-	session 		= require('./session'),
+	session 		= require('./sessionMiddleware'),
 	cryptData		= require('./cryptData');
 
 // mongo
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/wo', { useMongoClient: true, promiseLibrary: global.Promise }, function(err) {
+mongoose.connect('mongodb://localhost:27017/wo', { useMongoClient: true, promiseLibrary: global.Promise }, (err) => {
   if (err) {console.log(err)}
   	else {console.log('mongodb success connect on mongodb://localhost:27017/wo')}
 });
@@ -24,17 +24,17 @@ app.use(cookieParser());
 // static
 app.use(express.static('public'));
 
-// registr
-app.get('/session', session, function (req, res) {
+// session
+app.get('/session', session, (req, res) => {
 	if (res.sessionUser) {res.send({username: res.sessionUser.username, favorite: res.sessionUser.favorite,})}
 	else {res.send()}
 });
 
 // registr
-app.post('/registr', function (req, res) {
+app.post('/registr', (req, res) => {
 	var newUser = new User(req.body);
 	newUser.favorite = [];
-	newUser.save(function(err, user) {
+	newUser.save((err, user) => {
 		if (err) { 
 			res.send({success: false, msg: 'user not saved', err: err}) 
 		} else {
@@ -44,13 +44,13 @@ app.post('/registr', function (req, res) {
 });
 
 // login
-app.post('/login', function (req, res) {
-	User.findOne({username: req.body.username}, function(err, user) {
+app.post('/login', (req, res) => {
+	User.findOne({username: req.body.username}, (err, user) => {
 		if (err) {res.send({success: false, msg: 'server error - find user'});} 
 		if (user) {
 			if (user.password === req.body.password) {
 				let token = String(user._id) + '.' + cryptData.encrypt(String(user._id));
-				res.send({success: true, msg: 'user logged', token: token});	
+				res.send({success: true, msg: 'user logged', token: token, favorite: user.favorite});	
 			} else {
 				res.send({success: false, msg: 'bad password'});
 			}
@@ -62,40 +62,43 @@ app.post('/login', function (req, res) {
 
 
 // all users list
-app.get('/getAllUsersList', function (req, res) {
-	User.find({}, function(err, users) {
+app.get('/getAllUsersList', (req, res) => {
+	User.find({}, (err, users) => {
 		if (err) {console.log(err);}
 		else { res.send(users); }
 	});
 });
 
 // get city data
-app.get('/getData', function (req, res) {
+app.get('/getData', (req, res) => {
 	let city = req.query.city;
 	let url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&units=imperial&appid=bc7ed11acd2463db28ad88e6d9662d83';
-	request(url, function (err, response, body) {
+	request(url, (err, response, body) => {
 		if(err){ res.send({success: false}); } 
 		else { res.send({success: true, data: JSON.parse(body)}); }
 	});
 });
 
 // add to favorite
-app.post('/addToFavorite', function (req, res) {
-	User.findOne({username: req.body.username}, function(err, user) {
+app.post('/addToFavorite', (req, res) => {
+	User.findOne({username: req.body.username}, (err, user) => {
 		if (err) {
 			res.send({success: false, msg: 'error'})
-		} else {
+		} 
+		if (user) {
 			if (!user.favorite) { user.favorite = []; }
 			user.favorite.push(req.body.city);
 			user.save()
 			res.send({success: true, msg: 'city added to favorite'})
+		} else {
+			res.send({success: false, msg: 'error'})
 		}
 	})
 });
 
 // delete favorite
-app.post('/deleteFavoriteCity', function (req, res) {
-	User.findOne({username: req.body.username}, function(err, user) {
+app.post('/deleteFavoriteCity',  (req, res) => {
+	User.findOne({username: req.body.username}, (err, user) => {
 		if (err) {
 			handleError(err);
 			res.send({success: false, msg: 'error'})
@@ -114,5 +117,3 @@ app.post('/deleteFavoriteCity', function (req, res) {
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
-
-// 
