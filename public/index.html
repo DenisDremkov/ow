@@ -3,7 +3,6 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="style.css">
 </head>
@@ -11,7 +10,7 @@
 <body ng-app="ow">
 
 	<header>
-
+		<span>{{$root.test}}</span>
 		<div 
 			ng-controller 	= "authCtrl"
 			id				= "auth">
@@ -31,7 +30,7 @@
 				ng-click = "toggleLoginForm()"
 				class    = "glyphicon glyphicon-log-in">
 			</span>
-			<span ng-if= "$root.username">Hello, {{$root.username}}</span>
+			<span id="hello" ng-if= "$root.username">Hello, {{$root.username}}</span>
 			<span 
 				id		 = "sign-out-handler" 
 				ng-if 	 = "$root.isLogged"
@@ -203,7 +202,8 @@
 	<footer>
 
 	</footer>
-	
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-cookies.js"></script>
 	<script src="index.js"></script>	
 </body>
 </html>

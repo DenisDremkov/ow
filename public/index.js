@@ -1,33 +1,58 @@
 
 // app
-	const myAppModule = angular.module('ow', []);
+	const myAppModule = angular.module('ow', [
+		'ngCookies'
+	]);
 
-// auth ctrl	
-	myAppModule.controller('authCtrl', function($scope, authService, dataService) {
-			
+// run
+	myAppModule.run(['$rootScope', '$http', 'dataService', function ($rootScope, $http, dataService) {
+		return $http
+			.get('http://localhost:3000/session')
+			.success(function(data) {
+				if (data.username) {
+					$rootScope.isLogged = true;
+					$rootScope.username =  data.username;
+					dataService.setFavorites(data.favorite);
+				}				
+			})
+			.error(function() {console.log('error')});
+
+	}]);
+
+// CONTROLLERS
+	
+	// auth ctrl		
+	myAppModule.controller('authCtrl', function($scope, authService, dataService, $cookies) {
+
 		$scope.user = {};
 		$scope.newUser = {};
 		$scope.errMsg = {};
+
+		function clearData() {
+			$scope.user = {};
+			$scope.newUser = {};
+			$scope.errMsg = {};
+		}
 		
 		function hideRegistrForm() {
 			$scope.registrView = false;
 			$scope.loginView = true;
-			$scope.errMsg = {};
-		}
+			clearData();
+		};
 
-		$scope.toggleLoginForm = function() { $scope.loginView = !$scope.loginView; }
+		$scope.toggleLoginForm = function() { $scope.loginView = !$scope.loginView; };
 
-		$scope.hideLoginForm = function() { $scope.loginView = false; }
+		$scope.hideLoginForm = function() { $scope.loginView = false; };
 
 		$scope.openRegistrForm = function() {
 			$scope.registrView = true;
 			$scope.loginView = false;
-			$scope.errMsg = {};
-		}
+			clearData();
+		};
 
 		$scope.hideRegistrForm = function() {
 			hideRegistrForm();
-		}
+		};
 
 		$scope.login = function() {
 			
@@ -68,21 +93,22 @@
 				.registr({username: $scope.newUser.username, password: $scope.newUser.password})
 				.success(function(data) { hideRegistrForm(); })
 				.error(function(err) { console.log(err) });
-		}
+		};
 
-		$scope.signOut = function() { location.reload(); }
+		$scope.signOut = function() {
+			$cookies.remove('sessionOw');
+			location.reload(); 
+		};
 
 		$scope.getAllUsersList = function() {
 			authService
 				.getAllUsersList()
 				.success(function(data) { $scope.allUsersList = data; })
 				.error(function(err) { console.log(err) });
-		}	
+		};
 	})
 
-
-//  data ctrl
-
+	//  data ctrl
 	myAppModule.controller('dataCtrl', function($scope, dataService) {
 		
 		$scope.city = 'london';
@@ -136,7 +162,7 @@
 		}
 	})
 
-// favorite
+	// favorite ctrl
 	myAppModule.controller('favoriteCtrl', function($scope, dataService) {
 		$scope.favorites = dataService.getFavorites();
 		$scope.getFavoriteCityData = function(city) {
@@ -147,7 +173,7 @@
 		}
 	});
 
-// service
+// SERVICE
 	
 	// data service
 	myAppModule.service('dataService', function($http) {
