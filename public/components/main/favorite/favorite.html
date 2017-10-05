@@ -1,0 +1,19 @@
+<h3>favorite city: </h3>
+			
+<ul>
+	
+	<li ng-repeat = "city in favorites">
+		
+		<button 
+			class	= "btn btn-light" 
+			ng-click= "getCityData(city.name)">
+			<span>{{city.name}}</span>
+			<span class="temperature">{{city.temp}}</span>
+		</button>
+		
+		<span 
+			ng-click= "deleteFavoriteCity(city.name)" 
+			class	= "glyphicon glyphicon-trash">
+		</span>
+	</li>
+</ul>
