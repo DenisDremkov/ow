@@ -36,16 +36,6 @@ myAppModule.controller('dataCtrl', function($scope, dataService, userService) {
 			.error(() => {console.log('error')});
 	}
 
-	$scope.deleteFavoriteCity = function(city) {
-		dataService
-			.deleteFavoriteCity(city, userService.getUsername())		
-		    .success( data => { 
-		    	let favorites = dataService.getFavorites();
-				favorites.splice(favorites.indexOf(city), 1); 
-			})
-			.error(() => console.log('error'));
-	}
-
 
 	$scope.detectDataType = (value) => { 
 		if (typeof value === 'string' || typeof value === 'number') {

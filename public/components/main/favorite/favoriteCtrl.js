@@ -12,6 +12,20 @@ myAppModule.controller('favoriteCtrl', function($scope, dataService, userService
 			$scope.$root.$applyAsync();
 		});
 
+	$scope.deleteFavoriteCity = function(cityName) {
+		dataService
+			.deleteFavoriteCity(cityName, userService.getUsername())		
+		    .success( data => { 
+		    	let _index;
+		    	let favorites = dataService.getFavorites();
+				favorites.map((cityObj, index) => { 
+					if (cityObj.name === cityName) { _index = index; } 
+				})
+				if (!angular.isUndefined(_index)) {	favorites.splice(_index, 1); } 
+			})
+			.error(() => console.log('error'));
+	}
+
 	$scope.getFavoriteCityData = city => {
 		dataService
 			.getData(city)		
