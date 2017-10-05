@@ -10,15 +10,31 @@
 
 <body ng-app="ow">
 
-	<header ng-include="'components/header.html'"></header>
+	<header ng-include="'components/header/header.html'"></header>
 	
-	<main ng-include="'components/main.html'"></main>
+	<main ng-include="'components/main/data.html'"></main>
 	
-	<footer ng-include="'components/footer.html'"></footer>
+	<footer ng-include="'components/footer/footer.html'"></footer>
 
-	<!-- scripts -->
+	<!-- libs -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-cookies.js"></script>
-	<script src="index.js"></script>	
+	<script src="//cdn.jsdelivr.net/bluebird/3.5.0/bluebird.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+	<!-- index -->
+	<script src="main.js"></script>
+
+	<!-- services -->
+	<script src="services/dataService.js"></script>
+	<script src="services/userService.js"></script>
+
+	<!-- controllers -->
+	<script src="components/header/auth/authCtrl.js"></script>
+	<script src="components/header/auth/registr/registrCtrl.js"></script>
+	<script src="components/header/auth/login/loginCtrl.js"></script>
+	<script src="components/main/dataCtrl.js"></script>
+	<script src="components/main/favorite/favoriteCtrl.js"></script>
+
 </body>
 </html>

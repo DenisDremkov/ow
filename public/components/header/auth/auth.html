@@ -1,0 +1,54 @@
+<!-- get all users list -->
+<div id="allUsers">
+	
+	<button  
+		ng-click= "getAllUsersList()"
+		class	= "btn btn-light">
+		get all users list
+	</button>
+	
+	<ul>
+		<li ng-repeat="user in allUsersList">{{user.username}}, </li>
+	</ul>
+</div>
+
+<!-- sign in -->
+<span 
+	id		 = "sign-in-handler" 
+	ng-if 	 = "!isLogged()"
+	ng-click = "toggleLoginForm()"
+	class    = "glyphicon glyphicon-log-in">
+</span>
+
+<!-- hello -->
+<span 
+	id		= "hello" 
+	ng-if	= "isLogged()">
+	Hello, {{getUserName()}}
+</span>
+
+<!-- sign-out -->
+<span 
+	id		 = "sign-out-handler" 
+	ng-if 	 = "isLogged()"
+	ng-click = "signOut()"
+	class    = "glyphicon glyphicon-log-out">
+</span>
+
+<!-- login form -->
+<div 
+	ng-if 			= "view.login"
+	ng-controller 	= "loginCtrl"
+	ng-include 		= "'components/header/auth/login/login.html'"
+	id				= "login"
+	class			= "auth-form">
+</div>
+
+<!-- registr form -->
+<div 
+	ng-if 			= "view.registr"
+	ng-controller 	= "registrCtrl"
+	ng-include 		= "'components/header/auth/registr/registr.html'"
+	id				= "registr"
+	class			= "auth-form">		
+</div>

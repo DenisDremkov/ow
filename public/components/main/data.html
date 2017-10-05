@@ -32,35 +32,17 @@
 		
 		<!-- favorite -->
 		<div
-			ng-if 			= "isLogged()"
-			ng-controller	= "favoriteCtrl" 
+			data-ng-if 		= "isLogged()"
+			ng-controller	= "favoriteCtrl"
+			ng-include		= "'components/main/favorite/favorite.html'"
 			id				= "favorite">
-			
-			<h3>favorite city: </h3>
-			
-			<ul>
-				
-				<li ng-repeat = "city in favorites">
-					
-					<button 
-						class	= "btn btn-light" 
-						ng-click= "getCityData(city)">
-						{{city}}
-					</button>
-					
-					<span 
-						ng-click= "deleteFavoriteCity(city)" 
-						class	= "glyphicon glyphicon-trash">
-					</span>
-				</li>
-			</ul>
 		</div>
 		
 		<!-- main view -->
 		<table 
 			ng-if 	= "mainView" 
 			class 	= "table table-bordered" 
-			id		="main-view-table">
+			id		= "main-view-table">
 			
 			<tr><td><h2>{{mainView.name}}</h2></td></tr>
 			
