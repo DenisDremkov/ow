@@ -86,7 +86,12 @@ app.get('/getCityTemperature', (req, res) => {
 	request(url, (err, response, body) => {
 		if(err){ res.send({success: false}); } 
 		else { 
-			res.send({success: true, temp: (JSON.parse(body)).main.temp}); 
+			let _body = JSON.parse(body);
+			if (_body.cod === '404') {
+				res.send({success: false});
+			} else {
+				res.send({success: true, temp: _body.main.temp}); 	
+			}			
 		}
 	});
 });

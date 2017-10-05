@@ -40,13 +40,13 @@
 			
 			<ul>
 				
-				<li ng-repeat = "cityObj in favorites">
+				<li ng-repeat = "city in favorites">
 					
 					<button 
 						class	= "btn btn-light" 
-						ng-click= "getCityData(city)">
-						<span>{{cityObj.name}}</span>
-						<span class="temperature">{{cityObj.temp}}</span>
+						ng-click= "getCityData(city.name)">
+						<span>{{city.name}}</span>
+						<span class="temperature">{{city.temp}}</span>
 					</button>
 					
 					<span 

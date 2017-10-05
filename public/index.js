@@ -49,7 +49,10 @@
 
 		let _favorites = null;
 		
-		this.setFavorites = data => { _favorites = data; };
+		this.setFavorites = data => { 
+			if (!_favorites) {	_favorites = []; }
+			data.map( item => { _favorites.push({name: item}); })
+		};
 		this.getFavorites = data => { return _favorites; };
 
 		this.getData = function(city) {
@@ -241,11 +244,13 @@
 
 		$scope.disableAddBtn = () => {
 			let favorites = dataService.getFavorites();
-			if (favorites) {
-				return (favorites.indexOf($scope.city) !== -1) || !$scope.city || ($scope.city === ''); 
-			} else {
-				return false;
-			}
+			let isRepeated = false;
+			favorites.map(function(obj) {
+				if (obj.name === $scope.city) {
+					isRepeated = true
+				}
+			});
+			return isRepeated || !$scope.city || $scope.city === '';
 		}
 
 		$scope.disableGetBtn = () => { return !$scope.city || ($scope.city === ''); }
@@ -261,7 +266,7 @@
 			dataService
 				.addToFavorite($scope.city, userService.getUsername())	
 				.success( data => { 
-					dataService.getFavorites().push($scope.city); 
+					dataService.getFavorites().push({name: $scope.city}); 
 					$scope.city = undefined;
 				})
 				.error(() => {console.log('error')});
@@ -290,25 +295,14 @@
 
 	// favorite ctrl
 	myAppModule.controller('favoriteCtrl', function($scope, dataService) {
-		
-		let transformData = function(arrayIn) {
-			let arrayOut = [];
-			for (let i = 0; i < arrayIn.length; i++) {
-				arrayOut.push( {name: arrayIn[i]} );
-			}
-			return arrayOut;
-		}
-		$scope.favorites = transformData( dataService.getFavorites() );
-		console.log($scope.favorites)
-		
-		// get data
-		for (let i = 0; i < $scope.favorites.length; i++) {
-			let city = $scope.favorites[i].name;
+
+		function getCityTemperature(city) {
 			dataService
 				.getCityTemperature(city)
 				.then(
 					data => {
 						let obj = _.find($scope.favorites, function (obj) { return obj.name === city; });
+						console.log(obj)
 						obj.temp = (JSON.parse(data)).temp;
 						$scope.$root.$applyAsync();
 					},
@@ -316,12 +310,29 @@
 				)
 		}
 
-		
+		$scope.favorites =  dataService.getFavorites();
+
+		for (let i = 0; i < $scope.favorites.length; i++) {
+			let city = $scope.favorites[i].name;
+			getCityTemperature(city);
+		}
 
 		$scope.getFavoriteCityData = city => {
 			dataService
 				.getData(city)		
-			    .success( data => { $scope.mainView = data.data; })
+			    .success( data => { 
+			    	$scope.mainView = data.data; 
+			    })
 				.error( () =>  console.log('error'));
 		}
+
+		$scope.$watch('favorites.length', function(newV, oldV) {
+			if (newV > oldV) {
+				$scope.favorites.map(function(obj) {
+					if (!obj.temp) {
+						getCityTemperature(obj.name);
+					}
+				})
+			}
+		})
 	});
