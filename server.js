@@ -79,6 +79,18 @@ app.get('/getData', (req, res) => {
 	});
 });
 
+// get city temperature
+app.get('/getCityTemperature', (req, res) => {
+	let city = req.query.city;
+	let url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&units=imperial&appid=bc7ed11acd2463db28ad88e6d9662d83';
+	request(url, (err, response, body) => {
+		if(err){ res.send({success: false}); } 
+		else { 
+			res.send({success: true, temp: (JSON.parse(body)).main.temp}); 
+		}
+	});
+});
+
 // add to favorite
 app.post('/addToFavorite', (req, res) => {
 	User.findOne({username: req.body.username}, (err, user) => {

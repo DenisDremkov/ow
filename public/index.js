@@ -1,10 +1,10 @@
 
 'use strict';
 
-// app
+// APP
 	const myAppModule = angular.module('ow', []);
 
-// interceptor
+// INTERCEPTOR
 	myAppModule.factory('sessionInjector', [ '$window', function($window) {
 		var sessionInjector = {
 			request: request => {
@@ -17,13 +17,13 @@
 	}]);
 
 
-// config
+// CONFIG
 	myAppModule.config(['$httpProvider', function($httpProvider) {
 		$httpProvider.interceptors.push('sessionInjector');
 	}]);
 
 
-// run
+// RUN
 	myAppModule.run(['$rootScope', '$http', 'dataService', 'userService', '$window', function ($rootScope, $http, dataService, userService, $window) {
 		let token = $window.localStorage.getItem('sessionOw');
 		if (token) {
@@ -54,6 +54,20 @@
 
 		this.getData = function(city) {
 			return $http.get( 'http://localhost:3000/getData', {params: {city: city}});	
+		};
+		this.getCityTemperature = function(city) {
+			return $http.get( 'http://localhost:3000/getCityTemperature', {params: {city: city}});	
+		};
+
+		this.getCityTemperature = function(city) {
+			let promise = new Promise(function (resolve, reject) {
+		        let xmlHttp = new XMLHttpRequest();
+		        xmlHttp.addEventListener("load", function() {resolve(xmlHttp.responseText)}); 
+		        xmlHttp.addEventListener("error", function() {reject(xmlHttp.responseText)});
+	    		xmlHttp.open( 'GET', 'http://localhost:3000/getCityTemperature' +'?city=' + city, true ); 
+			    xmlHttp.send( null );
+		    });
+			return promise;
 		};
 
 		this.addToFavorite= function(city, username) {
@@ -277,8 +291,33 @@
 	// favorite ctrl
 	myAppModule.controller('favoriteCtrl', function($scope, dataService) {
 		
-		$scope.favorites = dataService.getFavorites();
+		let transformData = function(arrayIn) {
+			let arrayOut = [];
+			for (let i = 0; i < arrayIn.length; i++) {
+				arrayOut.push( {name: arrayIn[i]} );
+			}
+			return arrayOut;
+		}
+		$scope.favorites = transformData( dataService.getFavorites() );
+		console.log($scope.favorites)
 		
+		// get data
+		for (let i = 0; i < $scope.favorites.length; i++) {
+			let city = $scope.favorites[i].name;
+			dataService
+				.getCityTemperature(city)
+				.then(
+					data => {
+						let obj = _.find($scope.favorites, function (obj) { return obj.name === city; });
+						obj.temp = (JSON.parse(data)).temp;
+						$scope.$root.$applyAsync();
+					},
+					err => console.log(err)
+				)
+		}
+
+		
+
 		$scope.getFavoriteCityData = city => {
 			dataService
 				.getData(city)		

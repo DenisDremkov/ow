@@ -40,16 +40,17 @@
 			
 			<ul>
 				
-				<li ng-repeat = "city in favorites">
+				<li ng-repeat = "cityObj in favorites">
 					
 					<button 
 						class	= "btn btn-light" 
 						ng-click= "getCityData(city)">
-						{{city}}
+						<span>{{cityObj.name}}</span>
+						<span class="temperature">{{cityObj.temp}}</span>
 					</button>
 					
 					<span 
-						ng-click= "deleteFavoriteCity(city)" 
+						ng-click= "deleteFavoriteCity(city.name)" 
 						class	= "glyphicon glyphicon-trash">
 					</span>
 				</li>

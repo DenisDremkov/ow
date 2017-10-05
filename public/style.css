@@ -157,9 +157,17 @@
 	}	
 	#favorite ul li button {
 		display: inline-block;
-		vertical-align: middle;
 		width: 100px;
 		margin: 5px;
+		vertical-align: middle;
+		position: relative;
+	}
+	#favorite ul li button span.temperature {
+		position: absolute;
+		right: 0;
+		top: 0;
+		font-size: 11px;
+		color: green;
 	}
 	#favorite .glyphicon-trash {
 		display: inline-block;
