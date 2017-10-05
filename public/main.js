@@ -1,6 +1,6 @@
 
 'use strict';
-
+console.log(Promise)
 // APP
 	const myAppModule = angular.module('ow', []);
 

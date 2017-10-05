@@ -14,20 +14,16 @@ myAppModule.service('dataService', function($http) {
 		return $http.get( 'http://localhost:3000/getData', {params: {city: city}});	
 	};
 	this.getCityTemperature = function(city) {
-		return $http.get( 'http://localhost:3000/getCityTemperature', {params: {city: city}});	
+		return $http.get( 'http://localhost:3000/getCityTemperature', {params: {city: city}});		
 	};
 
-	this.getCityTemperature = function(city) {
-		let promise = new Promise(function (resolve, reject) {
-	        let xmlHttp = new XMLHttpRequest();
-	        xmlHttp.addEventListener("load", function() {resolve(xmlHttp.responseText)}); 
-	        xmlHttp.addEventListener("error", function() {reject(xmlHttp.responseText)});
-    		xmlHttp.open( 'GET', 'http://localhost:3000/getCityTemperature' +'?city=' + city, true ); 
-		    xmlHttp.send( null );
-	    });
-		return promise;
-	};
-
+	this.getAllTemperature = (cities) => {
+		let config = {}
+		for (let i = 0; i < cities.length; i++) {
+			config[ cities[i].name ] = $http.get( 'http://localhost:3000/getCityTemperature', {params: {city: cities[i].name}});
+		}
+		return Promise.props(config)
+	}
 	this.addToFavorite= function(city, username) {
 		return $http.post( 'http://localhost:3000/addToFavorite', {city: city, username: username});
 	};
