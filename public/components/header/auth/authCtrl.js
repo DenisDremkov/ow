@@ -10,7 +10,6 @@ myAppModule.controller('authCtrl', function($scope, userService, $window) {
 	$scope.isLogged = () => { return userService.getLoginStatus(); }
 	
 	$scope.signOut = () => {
-		$window.localStorage.removeItem('sessionOw');
 		location.reload(); 
 	};
 

@@ -8,14 +8,13 @@ const express 		= require('express'),
 	cookieParser 	= require('cookie-parser'),
 	crypto			= require('crypto'),
 	User 			= require('./user'),
-	session 		= require('./sessionMiddleware'),
 	cryptData		= require('./cryptData');
 
 // mongo
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/wo', { useMongoClient: true, promiseLibrary: global.Promise }, (err) => {
-  if (err) {console.log(err)}
-  	else {console.log('mongodb success connect on mongodb://localhost:27017/wo')}
+	if (err) {console.log(err)}
+	else {console.log('mongodb success connect on mongodb://localhost:27017/wo')}
 });
 
 // middleware
@@ -25,12 +24,6 @@ app.use(cookieParser());
 
 // static
 app.use(express.static('public'));
-
-// session
-app.get('/session', session, (req, res) => {
-	if (res.sessionUser) {res.send({username: res.sessionUser.username, favorite: res.sessionUser.favorite,})}
-	else {res.send()}
-});
 
 // registr
 app.post('/registr', (req, res) => {
@@ -51,8 +44,7 @@ app.post('/login', (req, res) => {
 		if (err) {res.send({success: false, msg: 'server error - find user'});} 
 		if (user) {
 			if (user.password === req.body.password) {
-				let token = String(user._id) + '.' + cryptData.encrypt(String(user._id));
-				res.send({success: true, msg: 'user logged', token: token, favorite: user.favorite});	
+				res.send({success: true, msg: 'user logged', favorite: user.favorite});	
 			} else {
 				res.send({success: false, msg: 'bad password'});
 			}
@@ -133,6 +125,4 @@ app.post('/deleteFavoriteCity',  (req, res) => {
 });
 
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
-});
+app.listen(3000, () => console.log('Example app listening on port 3000!') );

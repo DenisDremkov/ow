@@ -24,7 +24,6 @@ myAppModule.controller('loginCtrl', function($scope, userService, dataService, $
 					userService.setUsername($scope.user.username);
 					dataService.setFavorites(data.favorite);
 					$scope.view.login = false;
-					$window.localStorage.setItem('sessionOw', data.token)
 				}
 				else {
 					$scope.errMsg.registrErrMsg = data.msg;
@@ -57,7 +56,6 @@ myAppModule.controller('loginCtrl', function($scope, userService, dataService, $
 	};
 
 	$scope.signOut = () => {
-		$window.localStorage.removeItem('sessionOw');
 		location.reload(); 
 	};
 
