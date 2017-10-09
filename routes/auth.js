@@ -1,52 +1,38 @@
 
-
-// let getConfig 		= require('./../configApp'),
-// 	securePassword 	= require('./../helpers/securePassword'),
-// 	User 			= require('./../models/user'),
-// 	localStrategy   = require('./authStrategy/local'); 
+let User = require('./../models/user'),
+	securePassword = require('./../helpers/securePassword');
 	
+module.exports = (router) => {
 
+	router.post('/registr', (req, res) => {
+		var newUser = new User({
+			username: req.body.username,
+			password: securePassword.encrypt(req.body.password)
+		});
+		newUser.favorite = [];
+		newUser.save((err, user) => {
+			if (err) { 
+				res.send({success: false, msg: 'user not saved', err: err}) 
+			} else {
+				res.send({success: true, msg: 'user saved'}) 
+			}
+		})
+	});
 
-// module.exports = ( router ) => {
-	
-// 	// registr
-// 	router.post('/registr', (req, res) => {
-// 		var newUser = new User({
-// 			username: req.body.username,
-// 			password: securePassword.encrypt(req.body.password)
-// 		});
-// 		console.log(newUser)
-// 		newUser.favorite = [];
-// 		newUser.save((err, user) => {
-// 			if (err) { 
-// 				res.send({success: false, msg: 'user not saved', err: err}) 
-// 			} else {
-// 				res.send({success: true, msg: 'user saved'}) 
-// 			}
-// 		})
-// 	})
+	router.post('/login', (req, res) => {
+		User.findOne({username: req.body.username}, (err, user) => {
+			if (err) {res.send({success: false, msg: 'server error - find user'});} 
+			if (user) {
+				if ( req.body.password === securePassword.decrypt(user.password) ) {
+					res.send({success: true, msg: 'user logged', favorite: user.favorite});	
+				} else {
+					res.send({success: false, msg: 'bad password'});
+				}
+			} else {
+				res.send({success: false, msg: 'yuo not registered'});
+			}			
+		})
+	});
 
-// 	let socialCallback = function (accessToken, refreshToken, profile, cb) {
-// 		console.log(accessToken, refreshToken, profile, cb)
-// 	}
-
-// 	// login
-// 	router.post('/login', localStrategy);
-// 	router.get('/facebook', () => {
-// 		console.log('fb strategy')
-// 	});
-// 	router.get('/github', (req, res) => {console.log('github'); res.send({test: 'github'})	});
-// 	router.get('/google', (req, res) => {console.log('google'); res.send({test: 'google'})	});
-// 	router.get('/youtube', (req, res) => {console.log('youtube'); res.send({test: 'youtube'})	});
-
-	
-// 	// passport.use(new FacebookStrategy(fbOpt, fbCallback))
-// 	// app.get('/auth/facebook/cb', passport.authenticate('facebook'))
-
-
-
-
-
-
-// 	return router;
-// };
+	return router;
+}
