@@ -87,5 +87,13 @@
 			</tr>
 		</table>
 	</div>
+
+	<!-- user data -->
+	<div 
+		ng-if			= "isLogged()"
+		ng-include  	= "'components/main/user/user.html'"
+		ng-controller 	= "userCtrl"
+		id				= "user-data">
+	</div>	
 </div>
 		

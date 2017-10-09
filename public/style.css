@@ -193,6 +193,28 @@
 		list-style-type: none;
 	}
 
+	/*user data*/
+	#user-data {
+		position: fixed;
+		top: 50%;
+		right: 20px;
+		height: 300px;
+		width: 300px;
+		margin-top: -150px;
+		border: 1px solid #ccc;
+		background-color: #fff;
+		overflow-y: auto;
+		overflow-x: auto;
+	}
+
+	#user-data td {
+		min-width: 50px; 
+		padding: 1px;
+		font-size: 9px;
+		overflow: hidden;
+	}
+
+
 /*footer*/
 	footer {
 		position: fixed;

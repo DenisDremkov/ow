@@ -1,6 +1,6 @@
 'use strict';
 	
-myAppModule.controller('authCtrl', function($scope, userService, $window) {
+myAppModule.controller('authCtrl', function($scope, userService, $window, $cookies) {
 	
 	$scope.view = {}
 	
@@ -10,6 +10,7 @@ myAppModule.controller('authCtrl', function($scope, userService, $window) {
 	$scope.isLogged = () => { return userService.getLoginStatus(); }
 	
 	$scope.signOut = () => {
+		$cookies.remove('ow-auth');
 		location.reload(); 
 	};
 

@@ -3,7 +3,7 @@
 myAppModule.controller('dataCtrl', function($scope, dataService, userService) {
 	
 	$scope.city = 'london';
-	
+
 	$scope.isLogged = () => { return userService.getLoginStatus(); }
 
 	$scope.disableAddBtn = () => {

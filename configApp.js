@@ -1,7 +1,7 @@
 
 'use strict';
 
-const _host = 'http://75c1741d.ngrok.io',
+const _host = 'http://632c646c.ngrok.io',   // + change in client config angular configService!!!!
 	crypto = require('crypto');
 
 const config = {
@@ -9,8 +9,8 @@ const config = {
 	auth: {
 		secureUser: {
 			salt: {
-				value: 'secret',
-				hashAlgoritm: 'sha256',					// not change
+				value: 'secret',						// change after clear db (not synchraniz)
+				hashAlgoritm: 'sha256',					// change after clear db (not synchraniz)
 				hash: undefined
 			},
 			password: {
