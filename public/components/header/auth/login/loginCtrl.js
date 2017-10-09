@@ -14,6 +14,13 @@ myAppModule.controller('loginCtrl', function($scope, userService, dataService, $
 
 	$scope.hideRegistrForm = () => hideRegistrForm();
 
+	$scope.socialAuth = (socialName) => {
+		userService
+			.socialAuth(socialName)
+			.success( data => { console.log(data); })
+			.error( err => console.log(err) );
+	}
+
 	$scope.login = () => {
 		
 		userService

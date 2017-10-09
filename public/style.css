@@ -76,6 +76,18 @@
 		display: inline-block;
 		margin-top: 20px;
 	}
+
+	#login-socials {
+    	line-height: 1;
+	}
+
+	#login-socials a {
+		display: inline-block;
+		margin: 5px;
+		cursor: pointer;
+		font-size: 20px;
+		color: #000;
+	}
 	
 	/*error message in login and registr form*/
 	#err-msg {

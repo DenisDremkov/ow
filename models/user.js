@@ -1,4 +1,4 @@
-
+'use strict';  
 const mongoose = require('mongoose');
 
 let UserSchema = new mongoose.Schema({
@@ -7,6 +7,11 @@ let UserSchema = new mongoose.Schema({
 		unique: true,
 		required: true
 	},
+	email: {
+		type: String,
+		unique: true,
+		required: false
+	},
 	password: {
 		type: String,
 		required: true
@@ -14,6 +19,9 @@ let UserSchema = new mongoose.Schema({
 	favorite: {
 		type: Array
 	},
+	fbId: {
+		type: String
+	}
 });
 
 module.exports = mongoose.model('user', UserSchema);

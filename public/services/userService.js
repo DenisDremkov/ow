@@ -1,5 +1,6 @@
 'use strict';
 
+// TODO replace hostname to common config or backend
 myAppModule.service('userService', function($http, $q) {
 		
 	let _username = undefined;
@@ -11,8 +12,11 @@ myAppModule.service('userService', function($http, $q) {
 	this.setLoginStatus = value => { _isLogged = value; };		
 	this.getLoginStatus = () => { return _isLogged; };
 
-	this.login = user => {	return $http.post('http://localhost:3000/login', user);};
-	this.registr = newUser => {	return $http.post('http://localhost:3000/registr', newUser);};
+	this.socialAuth = socialName => { return $http.get('http://localhost:3000/auth/' + socialName); };
 	
-	this.getAllUsersList = () => {	return $http.get('http://localhost:3000/getAllUsersList');};
+	this.login = user => { return $http.post('http://localhost:3000/auth/login', user);};
+	
+	this.registr = newUser => {	return $http.post('http://localhost:3000/auth/registr', newUser);};
+	
+	this.getAllUsersList = () => {	return $http.get('http://localhost:3000/api/getAllUsersList');};
 });
