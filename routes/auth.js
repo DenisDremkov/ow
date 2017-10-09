@@ -1,7 +1,27 @@
 
-let User = require('./../models/user'),
-	securePassword = require('./../helpers/securePassword');
-	
+let User 			= require('./../models/user'),
+	securePassword 	= require('./../helpers/securePassword'),
+	getConfig	 	= require('./../configApp'),
+	request 		= require('request');
+	// http 			= require('http');
+
+
+// let findSessionToken = (req, res, next) => {
+// 	console.log('findSessionToken')
+// 	console.log(req.session)
+// 	next();
+// }
+
+let queryUrlToJson = (url) => {
+	let obj = {};
+	let arr = url.split('&');
+	arr.map( (item) => {
+		let itemArr = item.split('=');
+		obj[ itemArr[0] ] = itemArr[1];
+	});	
+	return obj;
+}
+
 module.exports = (router) => {
 
 	router.post('/registr', (req, res) => {
@@ -32,6 +52,41 @@ module.exports = (router) => {
 				res.send({success: false, msg: 'yuo not registered'});
 			}			
 		})
+	});
+
+	router.get('/github', (req,res) => {
+		let url = 'https://github.com/login/oauth/authorize' + '?client_id=' + getConfig('auth--github--id') + '&scope=repo&redirect_uri=' + getConfig('auth--github--cb');
+		res.redirect(url)
+	})
+
+	router.get('/github/cb', (req, res) => {
+		let params = {
+			client_id: getConfig('auth--github--id'),
+			client_secret: getConfig('auth--github--secret'),
+			code: req.query.code,
+			redirect_uri: getConfig('host') + '/auth/github/cb'
+		}
+		request.post(
+			{
+				headers: {'Accept': 'application/json'},
+				url:     'https://github.com/login/oauth/access_token',
+				form:  params 
+			}, 
+			function(error, response, body){
+				let result = JSON.parse(body);
+				res.redirect('/');
+				// request.get(
+				// 	{
+				// 		// headers: {'access_token': body.access_token, 'scope':'repo,gist', 'token_type':'bearer'},
+				// 		url:     'https://api.github.com/user?' 
+				// 	},
+				// 	function(error, response, body){
+				// 		console.log(body);
+						
+				// 	}
+				// )	
+			}
+		);		
 	});
 
 	return router;

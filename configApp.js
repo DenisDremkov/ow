@@ -22,11 +22,12 @@ const config = {
 			FACEBOOK_APP_SECRET:'1f711752f2ab8e52236c8f44bff6c3f3',
 			callbackURL: _host + '/auth/facebook/cb'
 		},
-		github: {},
-		google: {}
+		github: {
+			id: 	'0ed9ad57c32b7b8ad7ef', 
+			secret:'4b1bca88d7cee6a7105e50a892e97aa0c826dbee',
+			cb: _host + '/auth/github/cb'
+		}
 	},
-
-	
 };
 
 // create hash salt
