@@ -3,23 +3,21 @@ const mongoose = require('mongoose');
 
 let UserSchema = new mongoose.Schema({
 	username: {
-		type: String,
-		unique: true,
-		required: true
+		type: String
 	},
 	email: {
-		type: String,
-		unique: true,
-		required: false
+		type: String
 	},
 	password: {
-		type: String,
-		required: true
+		type: String
 	},
 	favorite: {
 		type: Array
 	},
 	fbId: {
+		type: String
+	},
+	fbUserame: {
 		type: String
 	}
 });

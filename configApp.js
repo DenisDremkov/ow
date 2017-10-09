@@ -1,11 +1,11 @@
 
 'use strict';
 
-const host = 'http://69cf28fb.ngrok.io',
+const _host = 'http://75c1741d.ngrok.io',
 	crypto = require('crypto');
 
 const config = {
-	
+	host:  _host,
 	auth: {
 		secureUser: {
 			salt: {
@@ -20,7 +20,7 @@ const config = {
 		facebook: {
 			FACEBOOK_APP_ID: 	'1534206049955977', 
 			FACEBOOK_APP_SECRET:'1f711752f2ab8e52236c8f44bff6c3f3',
-			callbackURL: host + '/auth/facebook/cb'
+			callbackURL: _host + '/auth/facebook/cb'
 		},
 		github: {},
 		google: {}

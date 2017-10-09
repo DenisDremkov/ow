@@ -22,6 +22,6 @@
 
 
 // RUN
-	myAppModule.run(['$rootScope', '$http', 'dataService', 'userService', '$window', function ($rootScope, $http, dataService, userService, $window) {
+	myAppModule.run(['$rootScope', '$http', 'configService', 'dataService', 'userService', '$window', function ($rootScope, $http, configService, dataService, userService, $window) {
 		
 	}]);
