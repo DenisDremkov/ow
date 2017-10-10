@@ -13,9 +13,8 @@ module.exports =  (req, res) => {
 			let typeFind;
 			
 			// detect session type for correct finding
-			if ( decryptArray[0] === 'github' ) { 
-				typeFind = { ghId: array[0] }; 
-			}
+			if ( decryptArray[0] === 'github' ) { typeFind = { ghId: array[0] }; }
+			if ( decryptArray[0] === 'google' ) { typeFind = { googleId: array[0] }; }
 			
 			// find user
 			User.findOne(typeFind, (err, user) => {

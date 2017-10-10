@@ -1,1 +1,11 @@
-footer
+<!-- get all users list -->
+<div id="allUsers">
+	<ul>
+		<li ng-repeat="user in allUsersList">{{user.username}}, </li>
+	</ul>
+	<button  
+		ng-click= "getAllUsersList()"
+		class	= "btn btn-light">
+		get all users list
+	</button>
+</div>

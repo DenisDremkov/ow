@@ -10,7 +10,7 @@ module.exports = (router) => {
 
 	// github auth
 	router.get('/github', require('./auth/github').getLoginForm);
-	router.get('/github/cb', require('./auth/github').getDataUser);
+	router.get('/github/cb', require('./auth/github').getUserInfo);
 
 	// google auth
 	router.get('/google', require('./auth/google').getLoginForm);

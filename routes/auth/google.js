@@ -49,19 +49,20 @@ let getUser = (req, res) => {
 						uri: 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=' + result.access_token,
 						method: 'GET'
 					}, 
-					function (err, response, user) {
+					function (err, response, userString) {
 						if (err) {res.send(err)}
-						// let result = JSON.parse(body)
+						let userObj = JSON.parse(userString)
 						newUser = new User({
-							username: result.login,
-							ghId: result.id,
-							ghStringData: JSON.stringify(result),
-							ghAccessToken: result.access_token,
+							username: String(userObj.given_name) + String(userObj.family_name),
+							googleId: userObj.id,
+							oauthDataString: userString,
+							googleAccessToken: result.access_token,
 							favorite: []
 						});
 						newUser.save((err, user) => {
+							if (user) {console.log('user was saved')}
 						})
-						res.cookie('ow-auth', String(result.id) + '.' + secureData.encrypt('github---' + String(result.id)), { maxAge: 900000, httpOnly: false });
+						res.cookie('ow-auth', String(userObj.id) + '.' + secureData.encrypt('google---' + String(userObj.id)), { maxAge: 900000, httpOnly: false });
 						res.redirect('/');
 					}
 				);

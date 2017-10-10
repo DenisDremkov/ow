@@ -1,12 +1,21 @@
 
+<nav>
+	<a 
+		ui-sref="data" 
+		ui-sref-active="active">
+		data
+	</a>
+	<a 
+		ui-sref="maps" 
+		ui-sref-active="active">
+		maps
+	</a>
+</nav>
+
 <div 
+	id				= "auth"
 	ng-controller 	= "authCtrl"
-	id				= "auth">
-	
-	<div 
-		ng-controller 	= "authCtrl"
-		ng-include 		= "'components/header/auth/auth.html'">
-	</div>
-</div>	
+	ng-include 		= "'components/header/auth/auth.html'">
+</div>
 
 

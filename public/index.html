@@ -16,11 +16,11 @@
 
 <body ng-app="ow">
 
-	<header ng-include="'components/header/header.html'"></header>
+	<header class="clearfix" ng-include="'components/header/header.html'"></header>
 	
-	<main ng-include="'components/main/data.html'"></main>
+	<main ui-view></main>
 	
-	<footer ng-include="'components/footer/footer.html'"></footer>
+	<footer ng-controller = "footerCtrl" ng-include="'components/footer/footer.html'"></footer>
 
 	<!-- libs -->
 		<!-- angular 1.5.6 -->
@@ -35,6 +35,8 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 		<!-- angular-material -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.js"></script>
+		<!-- ui-router -->
+		<script src="//unpkg.com/@uirouter/angularjs/release/angular-ui-router.min.js"></script>
 
 	<!-- index -->
 		<script src="main.js"></script>
@@ -52,6 +54,8 @@
 		<script src="components/main/dataCtrl.js"></script>
 		<script src="components/main/favorite/favoriteCtrl.js"></script>
 		<script src="components/main/user/userCtrl.js"></script>
+		<script src="components/maps/mapsCtrl.js"></script>
+		<script src="components/footer/footerCtrl.js"></script>
 
 </body>
 </html>

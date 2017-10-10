@@ -26,10 +26,16 @@ let UserSchema = new mongoose.Schema({
 	ghToken: {
 		type: String
 	},
-	ghStringData: {
+	oauthDataString: {
 		type: String
 	},
 	ghAccessToken: {
+		type: String
+	},
+	googleId: {
+		type: String
+	},
+	googleAccessToken: {
 		type: String
 	}
 });

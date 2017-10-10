@@ -3,6 +3,7 @@
 
 // APP
 	const myAppModule = angular.module('ow', [
+		'ui.router',
 		'ngMaterial',
 		'ngCookies'
 	]);
@@ -19,8 +20,22 @@
 
 
 // CONFIG
-	myAppModule.config(['$httpProvider', function($httpProvider) {
+	myAppModule.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', function($httpProvider, $stateProvider, $urlRouterProvider) {
 		$httpProvider.interceptors.push('httpInterceptor');
+
+		$urlRouterProvider.otherwise('/');
+
+		$stateProvider
+			.state('data', {
+				url: "/",
+				controller: 'dataCtrl',
+				templateUrl: "components/main/data.html"
+			})
+			.state('maps', {
+				url: "/maps",
+				controller: 'mapsCtrl',
+				templateUrl: "components/maps/maps.html"
+			});
 	}]);
 
 
@@ -30,7 +45,7 @@
 		return	userService.getSession()
 				.success( data => { 
 					if (data.success) {
-						let obj = JSON.parse(data.user.ghStringData)
+						let obj = JSON.parse(data.user.oauthDataString)
 						console.log(data.user)
 						console.log(obj)
 						userService.setDataUser(obj);

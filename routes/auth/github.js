@@ -40,7 +40,7 @@ let getUser = (req, res) => {
 					newUser = new User({
 						username: result.login,
 						ghId: result.id,
-						ghStringData: JSON.stringify(result),
+						oauthDataString: JSON.stringify(result),
 						ghAccessToken: result.access_token,
 						favorite: []
 					});

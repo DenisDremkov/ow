@@ -39,6 +39,27 @@
 		z-index: 100;
 	}
 
+	header nav {
+		width: 50%;
+		float: left;
+		text-align: left;	
+	}
+
+	header nav a {
+		display: inline-block;
+		margin-right: 30px;
+		margin-left: 30px;
+		font-size: 20px;
+		color: #fff;
+	}
+	header nav a:hover,
+	header nav a:focus {
+		color: #fff;
+	}
+	header nav a.active {
+		text-decoration: underline;
+	}
+
 	#hello {
 		color: #fff;
 		font-size: 16px;
@@ -59,6 +80,8 @@
 	/*auth wrapper*/
 	#auth {
 		position: relative;
+		float: left;
+		width: 50%;
 	}
 	
 	/*login and registr form*/
@@ -109,25 +132,7 @@
 	#err-msg.error {color: red;}
 	#err-msg.success {color: green;}
 	
-	/*all users*/
-	#allUsers {
-		position: absolute;
-		left: 0px;
-		top: 0px;
-	}
-	#allUsers button {
-		padding: 0;
-		line-height: 1;
-	}
-	#allUsers ul {
-		display: inline-block;
-		list-style-type: none;
-	}
-	#allUsers li {
-		display: inline-block;
-		line-height: 1;
-	}
-
+	
 
 
 
@@ -233,9 +238,28 @@
 		left: 0;
 		right: 0;
 		height: 30px;
+		line-height: 30px;
+		vertical-align: middle;
 		padding-right: 25px;
 		padding-left: 25px;
 		background-color: #ccc;
-		line-height: 50px;
 		text-align: right;
 	}
+
+	/*all users*/
+	#allUsers {
+	}
+	#allUsers button {
+		padding: 0;
+		line-height: 1;
+		margin: 0;
+	}
+	#allUsers ul {
+		display: inline-block;
+		list-style-type: none;
+	}
+	#allUsers li {
+		display: inline-block;
+		line-height: 1;
+	}
+
