@@ -26,7 +26,14 @@ const config = {
 			id: 	'0ed9ad57c32b7b8ad7ef', 
 			secret:'4b1bca88d7cee6a7105e50a892e97aa0c826dbee',
 			cb: _host + '/auth/github/cb'
+		},
+		google: {
+			id : '917727024219-latjss1ku8ujln18mbs8iju18d9cam1o.apps.googleusercontent.com',
+			secret: 'Ja0MrG-4_PulO5j9jEX2cXE5',
+			cb: _host + '/auth/google/cb'
 		}
+
+		// temporal-loop-182510.
 	},
 };
 

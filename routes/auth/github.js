@@ -55,6 +55,6 @@ let getUser = (req, res) => {
 }
 
 module.exports = {
-	getGitHubLoginForm: authForm,
+	getLoginForm: authForm,
 	getUserInfo: getUser
 } 
