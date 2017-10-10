@@ -20,9 +20,9 @@
 
 
 // CONFIG
-	myAppModule.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', function($httpProvider, $stateProvider, $urlRouterProvider) {
+	myAppModule.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', function($httpProvider, $stateProvider, $urlRouterProvider, $locationProvider) {
 		$httpProvider.interceptors.push('httpInterceptor');
-
+		$locationProvider.html5Mode(true).hashPrefix('!')
 		$urlRouterProvider.otherwise('/');
 
 		$stateProvider

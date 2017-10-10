@@ -1,3 +1,14 @@
+my-google-map-dir {
+	display: block;
+	width: 44%;
+	height: 300px;
+	float: left;
+	margin-left: 3%;
+	margin-right: 3%;
+	
+}
+
+
 /*common*/
 	html,
 	body {
@@ -23,7 +34,11 @@
 		padding: 0;
 	}
 
-
+#map {
+	height: 500px;
+	width: 500px;
+	margin: 0;
+}
 /*header*/
 	header {
 		position: fixed;

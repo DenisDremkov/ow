@@ -32,8 +32,6 @@ const config = {
 			secret: 'Ja0MrG-4_PulO5j9jEX2cXE5',
 			cb: _host + '/auth/google/cb'
 		}
-
-		// temporal-loop-182510.
 	},
 };
 
