@@ -1,7 +1,7 @@
 
 'use strict';
 
-const _host = 'http://632c646c.ngrok.io',   // + change in client config angular configService!!!!
+const _host = 'http://d8873a15.ngrok.io',   // + change in client config angular configService + www resources (oAuth etc)!!!!
 	crypto = require('crypto');
 
 const config = {

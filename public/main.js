@@ -3,6 +3,7 @@
 
 // APP
 	const myAppModule = angular.module('ow', [
+		'ngMaterial',
 		'ngCookies'
 	]);
 
@@ -25,13 +26,12 @@
 
 // RUN
 	myAppModule.run(['$rootScope', '$http', 'dataService', 'userService', '$cookies', function ($rootScope, $http, dataService, userService, $cookies) {
-		// let session = $cookies.get('ow-auth');
-		// if (session) {
-		return	userService
-				.getSession()
+		
+		return	userService.getSession()
 				.success( data => { 
 					if (data.success) {
 						let obj = JSON.parse(data.user.ghStringData)
+						console.log(data.user)
 						console.log(obj)
 						userService.setDataUser(obj);
 						userService.setUsername(data.user.username);
@@ -43,6 +43,6 @@
 					}
 				})
 				.error( err => { console.log(err) });	
-		// }
+
 		
 	}]);
