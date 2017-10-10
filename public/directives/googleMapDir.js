@@ -15,7 +15,7 @@
             controller: function ($scope, $element, $attrs) {},  
             link: function (scope, element, attrs) {
                 // function showMap (opt) {
-                    // console.log(opt)
+                //     console.log(opt)
                     let map = new google.maps.Map(element[0], {
                         center: {lat: -34.397, lng: 150.644},
                         zoom: 8

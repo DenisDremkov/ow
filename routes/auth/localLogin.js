@@ -1,7 +1,7 @@
 
 let User 			= require('./../../models/user'),
 	secureData 		= require('./../../helpers/secureData');
-
+// TODO add session to local login
 module.exports =  (req, res) => {
 	User.findOne({username: req.body.username}, (err, user) => {
 		if (err) {res.send({success: false, msg: 'server error - find user'});} 

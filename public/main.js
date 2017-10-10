@@ -22,7 +22,7 @@
 // CONFIG
 	myAppModule.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', function($httpProvider, $stateProvider, $urlRouterProvider, $locationProvider) {
 		$httpProvider.interceptors.push('httpInterceptor');
-		$locationProvider.html5Mode(true).hashPrefix('!')
+		// $locationProvider.html5Mode(true).hashPrefix('!')				!!! add in new projects
 		$urlRouterProvider.otherwise('/');
 
 		$stateProvider

@@ -11,8 +11,6 @@ let authForm = (req,res) => {
 			// scope: 'https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive.metadata.readonly',
 			// scope: 'https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile',
 			scope: 'https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.readonly',
-			// https://www.googleapis.com/auth/gmail.readonly
-			// https://           www.googleapis.com/  auth/  userinfo.profile
 			// scope: 'https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive.metadata.readonly https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile',
 			access_type: 'offline',
 			include_granted_scopes: true,
@@ -53,7 +51,7 @@ let getUser = (req, res) => {
 						if (err) {res.send(err)}
 						let userObj = JSON.parse(userString)
 						newUser = new User({
-							username: String(userObj.given_name) + String(userObj.family_name),
+							username: 'google-' + String(userObj.given_name) + String(userObj.family_name),
 							googleId: userObj.id,
 							oauthDataString: userString,
 							googleAccessToken: result.access_token,

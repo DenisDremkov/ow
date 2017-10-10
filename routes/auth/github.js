@@ -37,8 +37,9 @@ let getUser = (req, res) => {
 				function (err, response, body) {
 					if (err) {res.send(err)}
 					let result = JSON.parse(body)
+					console.log(result)
 					newUser = new User({
-						username: result.login,
+						username: 'github-' + result.login,
 						ghId: result.id,
 						oauthDataString: JSON.stringify(result),
 						ghAccessToken: result.access_token,
