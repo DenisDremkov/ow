@@ -1,5 +1,6 @@
 'use strict';
 
+
 const 
 	express 		= require('express'),
 	app 			= express(),
@@ -10,7 +11,9 @@ const
 	User 			= require('./models/user'),
 	getConfig 		= require('./configApp'),
 	auth 			= require('./routes/auth')(router),
-	api 			= require('./routes/api')(router);
+	api 			= require('./routes/api')(router),
+	pay 			= require('./routes/pay')(router);
+
 
 // mongo
 mongoose.Promise = global.Promise;
@@ -18,6 +21,9 @@ mongoose.connect('mongodb://localhost:27017/wo', { useMongoClient: true, promise
 	if (err) {console.log(err)}
 	else {console.log('mongodb success connect on mongodb://localhost:27017/wo')}
 });
+
+// view
+app.set('view engine', 'pug');
 
 // middleware
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -29,6 +35,10 @@ app.use('/auth', auth)
 
 // api
 app.use('/api', api);
+
+// pay
+app.use('/pay', pay);
+
 
 // static
 app.use(express.static('public'));

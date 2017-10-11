@@ -20,11 +20,14 @@
 
 
 // CONFIG
-	myAppModule.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', function($httpProvider, $stateProvider, $urlRouterProvider, $locationProvider) {
+	myAppModule.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', 
+		// '$window', 'configService',
+		function( $httpProvider, $stateProvider, $urlRouterProvider, $locationProvider) {
 		$httpProvider.interceptors.push('httpInterceptor');
+		// $window, configService,
 		// $locationProvider.html5Mode(true).hashPrefix('!')				!!! add in new projects
 		$urlRouterProvider.otherwise('/');
-
+		// $window.stripe = Stripe(configService.getValue('stripePublish'));
 		$stateProvider
 			.state('data', {
 				url: "/",
@@ -35,13 +38,22 @@
 				url: "/maps",
 				controller: 'mapsCtrl',
 				templateUrl: "components/maps/maps.html"
+			})
+			.state('products', {
+				url: "/products",
+				controller: 'productsCtrl',
+				templateUrl: "components/products/products.html"
 			});
 	}]);
 
 
 // RUN
-	myAppModule.run(['$rootScope', '$http', 'dataService', 'userService', '$cookies', function ($rootScope, $http, dataService, userService, $cookies) {
+	myAppModule.run([ '$window', '$rootScope', '$http', 'configService', 'dataService', 'userService', '$cookies', 
+	function (  $window, $rootScope, $http, configService, dataService, userService, $cookies) {
+
+
 		
+		// wait session results
 		return	userService.getSession()
 				.success( data => { 
 					if (data.success) {

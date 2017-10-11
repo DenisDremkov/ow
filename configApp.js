@@ -1,7 +1,7 @@
 
 'use strict';
 
-const _host = 'http://0cdb06f7.ngrok.io',   // + change in client config angular configService + www resources (oAuth etc)!!!!
+const _host = 'https://456d9104.ngrok.io',   // + change in client config angular configService + www resources ngrok (oAuth(google, github), maps etc)!!!!
 	crypto = require('crypto');
 
 const config = {
@@ -33,6 +33,12 @@ const config = {
 			cb: _host + '/auth/google/cb'
 		}
 	},
+	paySystem: {
+		stripe: {
+			public: 'pk_test_ASertkOAnJYmOh3mVzOvf1bp',
+			secret: 'sk_test_pj8Q73z0uu9E2HOhnnsr6aS3'
+		}
+	}
 };
 
 // create hash salt

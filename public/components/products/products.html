@@ -1,0 +1,68 @@
+
+<div class= "clearfix">
+	
+	<!-- <span ng-repeat 	= "product in products">{{product}}</span> -->
+	
+	<div
+		ng-repeat 	= "product in products" 
+		style 		= "float: left; width: 20%;width: 200px; height: auto; padding: 10px; margin-top: 30px;">	
+		
+		<div style="border: 1px solid #ccc; padding: 10px; box-shadow: 1px 1px 1px 1px #555">
+			
+			<h4>{{product.name}}</h4>
+			
+			<label style="display: block; margin-bottom: 10px;">
+				price:
+				<input 
+					ng-model= "product.price" 
+					class	= "form-control"
+					type	= "number" 
+					disabled >
+			</label>
+			
+
+			<label style="display: block; margin-bottom: 10px;">
+				amount:
+				<input 
+					ng-model= "product.amount"
+					class	= "form-control" 
+					type	= "number"
+					ng-change= product.setSumm(product.amount)>
+			</label>
+
+			<label style="display: block; margin-bottom: 10px;">
+				summ: 
+				<input 
+					ng-model= "product.summ" 
+					class	= "form-control"
+					type	= "number" 
+					disabled >
+			</label>
+
+			<button 
+				ng-click = "buyPoduct(product)"
+				class	 = "btn btn-primary"
+				ng-disabled = "product.summ === 0">
+				buy
+			</button>
+		</div>
+	</div>
+</div>
+
+
+<!-- 
+<h3>stripesdfgsdfg</h3>
+
+<form action="/pay/stripe" method="POST">
+	sdfgsdfg
+	<script
+		src 			= "https://checkout.stripe.com/checkout.js" 
+		class="stripe-button"
+		data-key		= "pk_test_ASertkOAnJYmOh3mVzOvf1bp"
+		data-amount		= "999"
+		data-name		= "Demo Site"
+		data-description= "Widget"
+		data-image		= "https://stripe.com/img/documentation/checkout/marketplace.png"
+		data-locale		= "auto">
+	</script>
+</form> -->
